@@ -2,6 +2,8 @@ import urlparse
 import posixpath
 import urllib
 
+__version__ = '0.1'
+
 
 def querydict_to_querylist(querydict):
     """converts a querydict to a querylist"""
