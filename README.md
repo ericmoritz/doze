@@ -1,5 +1,7 @@
 # Doze
 
+[![Build Status](https://secure.travis-ci.org/ericmoritz/doze.png)](http://travis-ci.org/ericmoritz/doze)
+
 Doze is a URL building package inspired by
 [slumber](http://slumber.in/)
 
