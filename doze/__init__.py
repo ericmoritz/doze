@@ -37,6 +37,9 @@ def url_join(base, *args, **querydict):
 
     path = path if len(path) else "/"
     for x in args:
+        if not isinstance(x, basestring):
+            x = unicode(x)
+
         bits = x.split("?")
         if len(bits) == 2:
             querylist = merge_querylist(querylist, urlparse.parse_qsl(bits[1]))

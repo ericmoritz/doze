@@ -44,6 +44,11 @@ class TestDoze(TestCase):
         self.assertEqual("http://google.com/search/?q=query",
                          str(google))
 
+    def test_nonstring_bits(self):
+        google = doze.url("http://google.com/")
+        google = google("story", 10)
+        self.assertEqual("http://google.com/story/10?page=1",
+                         str(google(page=1)))
 
 class TestMergeQueryList(TestCase):
     def test(self):
