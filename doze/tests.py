@@ -32,5 +32,8 @@ class TestDoze(TestCase):
                          str(google(q="Eric Moritz")))
         
 
-        
-
+    def test_query_merge(self):
+        google = doze.url("http://google.com/?x=doze")
+        google = google("search/?q=query")
+        self.assertEqual("http://google.com/search/?x=doze&q=query",
+                         str(google))
