@@ -4,6 +4,7 @@ import doze
 class TestCase(BaseTest):
     pass
 
+
 class TestDoze(TestCase):
     
     def test(self):
@@ -28,7 +29,7 @@ class TestDoze(TestCase):
     def test_dupe_queries(self):
         google = doze.url("http://google.com/?q=doze")
 
-        self.assertEqual("http://google.com/?q=doze&q=Eric+Moritz",
+        self.assertEqual("http://google.com/?q=Eric+Moritz",
                          str(google(q="Eric Moritz")))
         
 
@@ -37,3 +38,26 @@ class TestDoze(TestCase):
         google = google("search/?q=query")
         self.assertEqual("http://google.com/search/?x=doze&q=query",
                          str(google))
+
+        google = doze.url("http://google.com/?q=doze")
+        google = google("search/?q=query")
+        self.assertEqual("http://google.com/search/?q=query",
+                         str(google))
+
+
+class TestMergeQueryList(TestCase):
+    def test(self):
+        # second query list trumps the first
+        self.assertEqual([("a", "2")],
+                         doze.merge_querylist([("a", "1")],
+                                              [("a", "2")]))
+        # items in the second list always appear last
+        self.assertEqual([("a", "1"), ("b", "2")],
+                         doze.merge_querylist([("a", "1")],
+                                              [("b", "2")]))
+
+        # items in the second list always appear last even if they dupe
+        self.assertEqual([("c", "c1"), ("a", "a2"), ("b", "b1")],
+                         doze.merge_querylist([("a", "a1"), ("c", "c1")],
+                                              [("a", "a2"), ("b", "b1")]))
+

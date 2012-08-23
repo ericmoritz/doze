@@ -25,7 +25,7 @@ setup(name='doze',
       install_requires=[
           # -*- Extra requirements: -*-
       ],
-      test_suite="doze.tests.TestDoze",
+      test_suite="doze.tests",
       entry_points="""
       # -*- Entry points: -*-
       """,

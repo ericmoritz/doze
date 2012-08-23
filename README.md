@@ -74,3 +74,17 @@ arguments and the url params as kwargs:
 
 
     
+## Changelog
+
+### v0.3
+
+Backwards compatible change: duplicate query parameters overwrite
+previous values with later values.
+
+    # old behavior
+    url = endpoint(page=3)
+    url = endpoint(page=4)
+    assert "http://example.com/v1?page=3&page=4" == str(url)
+
+    # new behavior
+    assert "http://example.com/v1?page=4" == str(url)

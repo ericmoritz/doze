@@ -1,8 +1,9 @@
 import urlparse
 import posixpath
 import urllib
+from itertools import chain
 
-__version__ = '0.2'
+__version__ = '0.3'
 
 
 def querydict_to_querylist(querydict):
@@ -13,6 +14,17 @@ def querydict_to_querylist(querydict):
                 yield key, subitem
         else:
             yield key, value
+
+
+def merge_querylist(querylist1, querylist2):
+    querydict = {}
+    for i, (key, value) in enumerate(querylist1):
+        querydict[key] = (1, i, key, value)
+    for i, (key, value) in enumerate(querylist2):
+        querydict[key] = (2, i, key, value)        
+    
+    querylist = sorted(querydict.values())
+    return [(key, value) for (_,_,key,value) in querylist]
 
 
 def url_join(base, *args, **querydict):
@@ -27,11 +39,11 @@ def url_join(base, *args, **querydict):
     for x in args:
         bits = x.split("?")
         if len(bits) == 2:
-            querylist.extend(urlparse.parse_qsl(bits[1]))
+            querylist = merge_querylist(querylist, urlparse.parse_qsl(bits[1]))
         path = posixpath.join(path, bits[0])
 
     # update the querylist
-    querylist.extend(querydict_to_querylist(querydict))
+    querylist = merge_querylist(querylist, list(querydict_to_querylist(querydict)))
 
     # encode the querylist
     query = urllib.urlencode(querylist)
@@ -45,6 +57,7 @@ class Url(object):
 
     def __call__(self, *args, **kwargs):
         base_url = url_join(self.base_url, *args, **kwargs)
+
         return Url(base_url)
 
     def __getattr__(self, name):
