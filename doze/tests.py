@@ -6,6 +6,7 @@ class TestCase(BaseTest):
 
 
 class TestDoze(TestCase):
+
     
     def test(self):
         twitter = doze.url("http://api.twitter.com/1/")
@@ -18,6 +19,15 @@ class TestDoze(TestCase):
 
         self.assertEqual("http://api.twitter.com/1/users/lookup.json?screen_name=ericmoritz",
                          str(user_lookup(screen_name="ericmoritz")))
+
+    def test_simple(self):
+        user_lookup = doze.url("http://api.twitter.com/1/",
+                               "users",
+                               "lookup.json",
+                               screen_name="ericmoritz")
+                                 
+        self.assertEqual("http://api.twitter.com/1/users/lookup.json?screen_name=ericmoritz",
+                         str(user_lookup))
 
     def test_hardcoded_queries(self):
         google = doze.url("http://google.com/?x=doze")

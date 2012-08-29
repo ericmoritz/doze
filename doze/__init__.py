@@ -3,7 +3,7 @@ import posixpath
 import urllib
 from itertools import chain
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 
 def querydict_to_querylist(querydict):
@@ -55,8 +55,8 @@ def url_join(base, *args, **querydict):
 
 
 class Url(object):
-    def __init__(self, base_url):
-        self.base_url = base_url
+    def __init__(self, *args, **kwargs):
+        self.base_url = url_join(*args, **kwargs)
 
     def __call__(self, *args, **kwargs):
         base_url = url_join(self.base_url, *args, **kwargs)
@@ -72,6 +72,5 @@ class Url(object):
     def __repr__(self):
         return "<doze %s>" % (str(self))
 
-def url(base):
-    return Url(base)
+url = Url
 
