@@ -21,8 +21,8 @@ def merge_querylist(querylist1, querylist2):
     for i, (key, value) in enumerate(querylist1):
         querydict[key] = (1, i, key, value)
     for i, (key, value) in enumerate(querylist2):
-        querydict[key] = (2, i, key, value)        
-    
+        querydict[key] = (2, i, key, value)
+
     querylist = sorted(querydict.values())
     return [(key, value) for (_,_,key,value) in querylist]
 
@@ -50,7 +50,7 @@ def url_join(base, *args, **querydict):
 
     # encode the querylist
     query = urllib.urlencode(querylist)
-    
+
     return urlparse.urlunsplit([scheme, netloc, path, query, fragment])
 
 
@@ -59,9 +59,7 @@ class Url(object):
         self.base_url = url_join(*args, **kwargs)
 
     def __call__(self, *args, **kwargs):
-        base_url = url_join(self.base_url, *args, **kwargs)
-
-        return Url(base_url)
+         return Url(self.base_url, *args, **kwargs)
 
     def __getattr__(self, name):
         return self(name)
@@ -73,4 +71,3 @@ class Url(object):
         return "<doze %s>" % (str(self))
 
 url = Url
-
