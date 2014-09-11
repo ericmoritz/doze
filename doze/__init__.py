@@ -40,9 +40,7 @@ def merge_querylist2(querylist1, querylist2):
             querylist.append((key, value))
     
     for key, value in querylist2:
-        override_existing.add(key)
         querylist.append((key, value))
-
 
     return querylist
     
