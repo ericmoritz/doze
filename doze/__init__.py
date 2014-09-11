@@ -3,7 +3,7 @@ import posixpath
 import urllib
 from itertools import chain
 
-__version__ = '0.4'
+__version__ = '0.5'
 
 
 def querydict_to_querylist(querydict):
@@ -17,6 +17,10 @@ def querydict_to_querylist(querydict):
 
 
 def merge_querylist(querylist1, querylist2):
+    return merge_querylist2(querylist1, querylist2)
+
+
+def merge_querylist1(querylist1, querylist2):
     querydict = {}
     for i, (key, value) in enumerate(querylist1):
         querydict[key] = (1, i, key, value)
@@ -25,6 +29,23 @@ def merge_querylist(querylist1, querylist2):
     
     querylist = sorted(querydict.values())
     return [(key, value) for (_,_,key,value) in querylist]
+
+
+def merge_querylist2(querylist1, querylist2):
+    querylist = []
+    override_existing = set(key for (key, _) in querylist2)
+
+    for key, value in querylist1:
+        if key not in override_existing:
+            querylist.append((key, value))
+    
+    for key, value in querylist2:
+        override_existing.add(key)
+        querylist.append((key, value))
+
+
+    return querylist
+    
 
 
 def url_join(base, *args, **querydict):

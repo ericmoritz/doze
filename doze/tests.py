@@ -60,6 +60,12 @@ class TestDoze(TestCase):
         self.assertEqual("http://google.com/story/10?page=1",
                          str(google(page=1)))
 
+    def test_list_params(self):
+        google = doze.url("http://example.com/")
+        self.assertEqual("http://example.com/?x=1&x=2",
+                         str(google(x=[1,2])))
+
+
 class TestMergeQueryList(TestCase):
     def test(self):
         # second query list trumps the first
